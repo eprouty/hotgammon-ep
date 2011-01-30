@@ -22,19 +22,51 @@ import java.util.Hashtable;
 public class GameImpl implements Game {
 	private Color currentTurn = Color.NONE;
 	private Hashtable<Location, Color> locationColor = new Hashtable<Location, Color>();
+	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
+	private int moveCount = 2;
 	
 	public void newGame() {
-		locationColor.put(Location.R1, Color.BLACK);
-		locationColor.put(Location.B1, Color.RED);
+		for (Location l : Location.values()){
+			switch(l){
+			case R1:
+				setupLocation(l, Color.BLACK, 2);
+				break;
+			case B1:
+				setupLocation(l, Color.RED, 2);
+				break;
+			default:
+				setupLocation(l, Color.NONE, 0);
+			}
+		}
 	}
+	
+	public void setupLocation(Location l, Color c, int count){
+		locationColor.put(l, c);
+		locationCount.put(l, count);
+	}
+	
 	public void nextTurn() {
-		currentTurn = Color.BLACK;
+		switch(currentTurn){
+		case BLACK:
+			currentTurn = Color.RED;
+			break;
+		case RED:
+			currentTurn = Color.BLACK;
+			break;
+		case NONE:
+			currentTurn = Color.BLACK;
+			break;
+		}
 	}
 	
 	public boolean move(Location from, Location to) {
 		if (getColor(to) == Color.RED){
 			return false;
 		}
+		
+		int toCount = (int)locationCount.get(to) + 1;
+		locationCount.put(to, toCount);
+		moveCount--;
 		return true;
 	}
 	
@@ -42,9 +74,12 @@ public class GameImpl implements Game {
 		return currentTurn; 
 	}
 	public int getNumberOfMovesLeft() {
-		return 1;
+		return moveCount;
 	}
-	public int[] diceThrown() { return new int[] {1,1}; }
+	public int[] diceThrown() {
+		return new int[] {3,4};
+	}
+	
 	public int[] diceValuesLeft() { return new int []{}; }
 	public Color winner() { return Color.NONE; }
 	
@@ -53,6 +88,6 @@ public class GameImpl implements Game {
 	}
 	
 	public int getCount(Location location) {
-		return 2;
+		return locationCount.get(location);
 	}
 }
