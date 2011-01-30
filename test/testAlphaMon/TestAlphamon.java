@@ -56,12 +56,13 @@ public class TestAlphamon {
   
   /**
    * Test #3. Moving a black checker from R1 to R2 is valid.
-   * Test TODO:Add this test later, too early to attempt this. After moving black checker from R1 to R2 there is only one checker on R1.
+   * Test #7: After moving black checker from R1 to R2 there is only one checker on R1.
    * Test #4. After moving there is only one turn left.
    */
   @Test public void moveBlackCheckerFromR1toR2isValid(){
+	  game.nextTurn();
 	  assertEquals("Failed trying to move a piece from R1 to R2", true, game.move(Location.R1, Location.R2));
-	  //assertEquals("Number of checkers left on R1 != 1", 1, game.getCount(Location.R1));
+	  assertEquals("Number of checkers left on R1 != 1", 1, game.getCount(Location.R2));
 	  assertEquals("There numberOfMovesLeft() != 1", 1, game.getNumberOfMovesLeft());
   }
   
@@ -71,5 +72,49 @@ public class TestAlphamon {
   @Test public void thereAre2RedCheckersOnB1atStart(){
 	  assertEquals(2, game.getCount(Location.B1));
 	  assertEquals(Color.RED, game.getColor(Location.B1));
+  }
+  
+  /**
+  * Test #6. Cannot more from R1 to B1 as there is an opponent (red) piece in the way
+  */
+  @Test public void cannotMoveFromR1toB1(){
+	  game.nextTurn();
+	  assertEquals(false, game.move(Location.R1, Location.B1));
+  }
+  
+  /**
+   * Test #8. After moving 2 black checkers the number of moves left is 0.
+   */
+  @Test public void noTurnsLeftAfterMoving2BlackCheckers(){
+	  game.nextTurn();
+	  game.move(Location.R1, Location.R2);
+	  game.move(Location.R2, Location.R3);
+	  assertEquals(0, game.getNumberOfMovesLeft());
+  }
+  
+  /**
+   * Test #9. Red players turn after nextTurn is called twice.
+   */
+  @Test public void redPlayersTurnSecond(){
+	  game.nextTurn();
+	  game.nextTurn();
+	  assertEquals(Color.RED, game.getPlayerInTurn());
+  }
+  
+  /**
+   * Test #10. Die values on the second turn are 3-4
+   */
+  @Test public void secondTurnDieValuesAre34(){
+	  game.nextTurn();
+	  game.nextTurn();
+	  assertArrayEquals(new int[] {3,4}, game.diceThrown());
+  }
+  
+  /**
+   * Test #11. First turn die roll is 1-2
+   */
+  @Test public void firstTurnDieValuesAre12(){
+	  game.nextTurn();
+	  assertArrayEquals(new int[] {1,2}, game.diceThrown());
   }
 }
