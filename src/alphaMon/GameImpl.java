@@ -1,5 +1,7 @@
 package alphaMon;
 
+import java.util.Hashtable;
+
 /** Skeleton implementation of HotGammon.
  
    This source code is from the book 
@@ -18,14 +20,39 @@ package alphaMon;
 */
 
 public class GameImpl implements Game {
-  public void newGame() {}
-  public void nextTurn() {}
-  public boolean move(Location from, Location to) { return false; }
-  public Color getPlayerInTurn() { return Color.NONE; }
-  public int getNumberOfMovesLeft() { return 0; }
-  public int[] diceThrown() { return new int[] {1,1}; }
-  public int[] diceValuesLeft() { return new int []{}; }
-  public Color winner() { return Color.NONE; }
-  public Color getColor(Location location) { return Color.NONE; }
-  public int getCount(Location location) { return 0; }
+	private Color currentTurn = Color.NONE;
+	private Hashtable<Location, Color> locationColor = new Hashtable<Location, Color>();
+	
+	public void newGame() {
+		locationColor.put(Location.R1, Color.BLACK);
+		locationColor.put(Location.B1, Color.RED);
+	}
+	public void nextTurn() {
+		currentTurn = Color.BLACK;
+	}
+	
+	public boolean move(Location from, Location to) {
+		if (getColor(to) == Color.RED){
+			return false;
+		}
+		return true;
+	}
+	
+	public Color getPlayerInTurn(){ 
+		return currentTurn; 
+	}
+	public int getNumberOfMovesLeft() {
+		return 1;
+	}
+	public int[] diceThrown() { return new int[] {1,1}; }
+	public int[] diceValuesLeft() { return new int []{}; }
+	public Color winner() { return Color.NONE; }
+	
+	public Color getColor(Location location){
+		return locationColor.get(location);
+	}
+	
+	public int getCount(Location location) {
+		return 2;
+	}
 }
