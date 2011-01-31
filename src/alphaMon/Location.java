@@ -1,7 +1,5 @@
 package alphaMon;
 
-import java.util.Iterator;
-
 /** This enum represents an enumeration of board locations (the
     "points") in the Backgammon board.
 

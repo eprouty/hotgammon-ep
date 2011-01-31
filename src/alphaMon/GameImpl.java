@@ -25,10 +25,13 @@ public class GameImpl implements Game {
 	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
 	private int moveCount = 2;
 	private int[] dice = new int[2];
-	private int[] diceLeft = new int[4];
 	private int turnCount = 0;
 	
 	public void newGame() {
+		//set currentPlayer to NONE in preparation to begin game
+		currentPlayer = Color.NONE;
+		turnCount = 0;
+		
 		//setup the locations that should have pieces to start
 		for (Location l : Location.values()){
 			switch(l){
