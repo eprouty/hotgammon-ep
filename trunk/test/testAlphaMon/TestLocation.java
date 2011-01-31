@@ -6,8 +6,6 @@ import alphaMon.Color;
 import alphaMon.Location;
 import static org.junit.Assert.*;
 
-import java.util.Iterator;
-
 /** Testing of the location enumeration.
  
    This source code is from the book 
