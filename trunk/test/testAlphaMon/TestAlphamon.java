@@ -275,4 +275,13 @@ public class TestAlphamon {
 	  assertEquals(2, game.diceValuesLeft()[0]);
 	  assertEquals(1, game.diceValuesLeft()[1]);
   }
+  
+  /**
+   * Test #26. New game sets the turn to NONE
+   */
+  @Test public void testNewGameSetsTurnToNONE(){
+	  game.nextTurn();
+	  game.newGame();
+	  assertEquals(Color.NONE, game.getPlayerInTurn());
+  }
 }
