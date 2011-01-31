@@ -1,3 +1,5 @@
+//Eric Prouty
+
 package alphaMon;
 
 import java.util.Hashtable;
