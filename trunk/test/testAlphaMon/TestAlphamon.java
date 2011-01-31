@@ -1,3 +1,5 @@
+//Eric Prouty
+
 package testAlphaMon;
 
 import org.junit.*;
@@ -230,9 +232,17 @@ public class TestAlphamon {
   /**
    * Test #21. Players can only move their own pieces
    */
-  @Test public void cannotMoveOpponentsPieces(){
+  @Test public void blackCannotMoveOpponentsPieces(){
 	  game.nextTurn();
 	  assertFalse(game.move(Location.B1, Location.B2));
+  }
+  /**
+   * Test #27. Converse of test #21
+   */
+  @Test public void redCannotMoveOpponentsPieces2(){
+	  game.nextTurn();
+	  game.nextTurn();
+	  assertFalse(game.move(Location.R1, Location.R2));
   }
   
   /**
