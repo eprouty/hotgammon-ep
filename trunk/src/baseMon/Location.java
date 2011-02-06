@@ -1,4 +1,5 @@
-package alphaMon;
+package baseMon;
+
 
 /** This enum represents an enumeration of board locations (the
     "points") in the Backgammon board.

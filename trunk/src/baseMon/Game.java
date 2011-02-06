@@ -1,4 +1,5 @@
-package alphaMon;
+package baseMon;
+
 
 /** This interface encapsulate all responsibilites of
     a Backgammon game. Please consult the book's

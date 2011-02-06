@@ -1,8 +1,9 @@
 //Eric Prouty
 
-package alphaMon;
+package baseMon;
 
 import java.util.Hashtable;
+
 
 /** Skeleton implementation of HotGammon.
  
@@ -25,9 +26,14 @@ public class GameImpl implements Game {
 	private Color currentPlayer = Color.NONE;
 	private Hashtable<Location, Color> locationColor = new Hashtable<Location, Color>();
 	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
+	private MoveStrategy MS;
 	private int moveCount = 2;
 	private int[] dice = new int[2];
 	private int turnCount = 0;
+	
+	public GameImpl(MoveStrategy MS){
+		this.MS = MS;
+	}
 	
 	public void newGame() {
 		//set currentPlayer to NONE in preparation to begin game
@@ -121,42 +127,22 @@ public class GameImpl implements Game {
 			return false;
 		}
 		
-		//cannot move to a place occupied by the opponent
-		Color toColor = getColor(to);
-		Color fromColor = getColor(from);
-		switch(toColor){
-		case RED:
-			if (fromColor == Color.BLACK){
-				return false;
-			}
-			break;
-		case BLACK:
-			if (fromColor == Color.RED){
-				return false;
-			}
-			break;
+		//if the movement strategy does not return true, then the move is invalid
+		if (!MS.isMoveValid(this, from, to)){
+			return false;
 		}
+		/**After this point the move has been deemed valid, everything from here on affects the state of the game **/
 		
-		//cannot make a movement if the from location is empty
-		//cannot move if the piece belongs to the opponent
-		switch(currentPlayer){
-		case RED:
-			if(fromColor != Color.RED){
-				return false;
+		//remove the used dice value from the remaining values array
+		int distTravelled = to.ordinal() - from.ordinal();
+		for (int i = 0; i < dice.length; i++){
+			if (dice[i] == distTravelled){
+				dice[i] = -1;
 			}
-			break;
-		case BLACK:
-			if(fromColor != Color.BLACK){
-				return false;
-			}
-			break;
-		//just return something is wrong anyways...
-		default:
-			return false;	
 		}
 		
 		//update the color of the to location
-		locationColor.put(to, fromColor);
+		locationColor.put(to, getColor(from));
 		
 		//update the number of pieces at the location being moved to
 		int toCount = (int)locationCount.get(to) + 1;
