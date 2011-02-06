@@ -2,8 +2,9 @@ package testAlphaMon;
 
 import org.junit.*;
 
-import alphaMon.Color;
-import alphaMon.Location;
+import baseMon.Color;
+import baseMon.Location;
+
 import static org.junit.Assert.*;
 
 /** Testing of the location enumeration.

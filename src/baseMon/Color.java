@@ -1,4 +1,4 @@
-package alphaMon;
+package baseMon;
 
 /** This class represents an enumeration of colours used in
  * Backgammon.  We need to represent the red or the black colour - but

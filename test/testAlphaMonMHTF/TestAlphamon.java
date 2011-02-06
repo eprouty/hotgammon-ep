@@ -2,10 +2,12 @@ package testAlphaMonMHTF;
 
 import org.junit.*;
 
-import alphaMon.Color;
-import alphaMon.Game;
-import alphaMon.GameImpl;
-import alphaMon.Location;
+import alphaMon.AlphaMoveStrategy;
+import baseMon.Color;
+import baseMon.Game;
+import baseMon.GameImpl;
+import baseMon.Location;
+
 
 import static org.junit.Assert.*;
 
@@ -22,7 +24,7 @@ public class TestAlphamon {
 	private Game game;
 
 	@Before public void setup() {
-		game = new GameImpl();
+		game = new GameImpl(new AlphaMoveStrategy());
 	}
 
 	@Test 
