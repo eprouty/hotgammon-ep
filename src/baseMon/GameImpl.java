@@ -4,6 +4,9 @@ package baseMon;
 
 import java.util.Hashtable;
 
+import baseMon.strategies.MoveStrategy;
+import baseMon.strategies.TurnStrategy;
+
 
 /** Skeleton implementation of HotGammon.
  
@@ -27,12 +30,15 @@ public class GameImpl implements Game {
 	private Hashtable<Location, Color> locationColor = new Hashtable<Location, Color>();
 	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
 	private MoveStrategy MS;
+	private TurnStrategy TS;
 	private int moveCount = 2;
 	private int[] dice = new int[2];
+	private int[] remainingDice = new int [4];
 	private int turnCount = 0;
 	
-	public GameImpl(MoveStrategy MS){
+	public GameImpl(MoveStrategy MS, TurnStrategy TS){
 		this.MS = MS;
+		this.TS = TS;
 	}
 	
 	public void newGame() {
@@ -86,33 +92,28 @@ public class GameImpl implements Game {
 	}
 	
 	public void nextTurn() {
-		//sets the turn based on who currently has a turn
-		switch(currentPlayer){
-		case BLACK:
-			currentPlayer = Color.RED;
-			break;
-		case RED:
-			currentPlayer = Color.BLACK;
-			break;
-		//none -> black, since black goes first
-		case NONE:
-			currentPlayer = Color.BLACK;
-			break;
-		}
+		//determine the next turn based off the selected turn strategy
+		currentPlayer = TS.nextPlayerInTurn(this);
 		
 		//sets the dice roll at the beggining of the turn
 		switch(turnCount % 3){
 		case 0:
 			dice[0] = 1;
 			dice[1] = 2;
+			remainingDice[0] = 1;
+			remainingDice[1] = 2;
 			break;
 		case 1:
 			dice[0] = 3;
 			dice[1] = 4;
+			remainingDice[0] = 3;
+			remainingDice[1] = 4;
 			break;
 		case 2:
 			dice[0] = 5;
 			dice[1] = 6;
+			remainingDice[0] = 5;
+			remainingDice[1] = 6;
 			break;
 		}
 		turnCount++;
@@ -136,8 +137,8 @@ public class GameImpl implements Game {
 		//remove the used dice value from the remaining values array
 		int distTravelled = to.ordinal() - from.ordinal();
 		for (int i = 0; i < dice.length; i++){
-			if (dice[i] == distTravelled){
-				dice[i] = -1;
+			if (remainingDice[i] == distTravelled){
+				remainingDice[i] = -1;
 			}
 		}
 		
@@ -173,7 +174,7 @@ public class GameImpl implements Game {
 	}
 	
 	public int[] diceValuesLeft() {
-		return new int[] {dice[1], dice[0]};
+		return new int[] {remainingDice[1], remainingDice[0]};
 	}
 	
 	public Color winner() {
