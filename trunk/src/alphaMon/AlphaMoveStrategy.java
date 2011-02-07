@@ -3,7 +3,7 @@ package alphaMon;
 import baseMon.Color;
 import baseMon.Game;
 import baseMon.Location;
-import baseMon.MoveStrategy;
+import baseMon.strategies.MoveStrategy;
 
 public class AlphaMoveStrategy implements MoveStrategy{
 	

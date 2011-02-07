@@ -3,6 +3,7 @@ package testAlphaMonMHTF;
 import org.junit.*;
 
 import alphaMon.AlphaMoveStrategy;
+import alphaMon.AlphaTurnStrategy;
 import baseMon.Color;
 import baseMon.Game;
 import baseMon.GameImpl;
@@ -24,7 +25,7 @@ public class TestAlphamon {
 	private Game game;
 
 	@Before public void setup() {
-		game = new GameImpl(new AlphaMoveStrategy());
+		game = new GameImpl(new AlphaMoveStrategy(), new AlphaTurnStrategy());
 	}
 
 	@Test 

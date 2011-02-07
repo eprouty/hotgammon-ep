@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import alphaMon.AlphaTurnStrategy;
 import baseMon.Game;
 import baseMon.GameImpl;
 import baseMon.Location;
@@ -16,9 +17,9 @@ public class TestBetaMon {
 	private Game game;
 	
 	@Before public void setup() {
-	    game = new GameImpl(new BetaMoveStrategy());
+	    game = new GameImpl(new BetaMoveStrategy(), new AlphaTurnStrategy());
 	    game.newGame();
-	  }
+	}
 	
 	@Test public void testBlackCheckerMayMoveInDirectionOfOwnInnerTable(){
 		game.nextTurn();
@@ -74,5 +75,43 @@ public class TestBetaMon {
 		game.nextTurn();
 		assertTrue(game.move(Location.R6, Location.R3));
 		assertEquals(1, game.getCount(Location.B_BAR));
+	}
+	@Test public void testSendRedPieceToTheBar(){
+		game.nextTurn();
+		game.nextTurn();
+		game.move(Location.B1, Location.B4);
+		game.nextTurn();
+		assertTrue(game.move(Location.B6, Location.B1));
+		assertEquals(1, game.getCount(Location.R_BAR));
+	}
+	
+	@Test public void testCannotMoveIfPiecesAreOnTheBar(){
+		testSendPieceToTheBar();
+		game.nextTurn();
+		assertFalse(game.move(Location.R1, Location.R7));
+	}
+	@Test public void testRedCannotMoveIfPiecesAreOnTheBar(){
+		testSendRedPieceToTheBar();
+		game.nextTurn();
+		assertFalse(game.move(Location.B4, Location.B5));
+	}
+	
+	@Test public void testMovingOutOfBar(){
+		testSendPieceToTheBar();
+		game.nextTurn(); //roll of 5 and 6 for black
+		assertTrue(game.move(Location.B_BAR, Location.R5));
+	}
+	@Test public void testRedMovingOutOfBar(){
+		testSendRedPieceToTheBar();
+		game.nextTurn();
+		assertTrue(game.move(Location.R_BAR, Location.B2));
+	}
+	
+	@Test public void testBearOff(){
+		game.nextTurn();
+		game.move(Location.B6, Location.B5);
+		game.nextTurn();
+		game.nextTurn();
+		assertFalse(game.move(Location.B5, Location.B_BEAR_OFF));
 	}
 }

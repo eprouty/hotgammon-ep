@@ -3,7 +3,7 @@ package betaMon;
 import baseMon.Color;
 import baseMon.Game;
 import baseMon.Location;
-import baseMon.MoveStrategy;
+import baseMon.strategies.MoveStrategy;
 
 public class BetaMoveStrategy implements MoveStrategy{
 
@@ -13,10 +13,18 @@ public class BetaMoveStrategy implements MoveStrategy{
 		if (to == Location.B_BAR || to == Location.R_BAR){
 			return true;
 		}
+		//given the avaialable rolls it will never be possible for a player to bear off in this version
+		//so only ensure that the player cannot do it, since they will always have checkers stopping them from bearing off
+		if (to == Location.B_BEAR_OFF || to == Location.R_BEAR_OFF){
+			return false;
+		}
 		
 		boolean performCapture = false;
 		switch (g.getColor(from)){
 		case BLACK:
+			if (g.getCount(Location.B_BAR) > 0 && from != Location.B_BAR){
+				return false;
+			}
 			//Black pieces move from low # locations to high #, so the to cannot be smaller than from
 			if (Location.distance(from, to) <= 0){
 				return false;
@@ -31,6 +39,9 @@ public class BetaMoveStrategy implements MoveStrategy{
 			}
 			break;
 		case RED:
+			if (g.getCount(Location.R_BAR) > 0 && from != Location.R_BAR){
+				return false;
+			}
 			//Red pieces move from high # locations to low #, so the to cannot be larger than from
 			if (Location.distance(from, to) >= 0){
 				return false;
