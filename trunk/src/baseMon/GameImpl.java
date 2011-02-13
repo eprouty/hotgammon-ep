@@ -5,6 +5,7 @@ package baseMon;
 import java.util.Hashtable;
 
 import baseMon.strategies.MoveStrategy;
+import baseMon.strategies.SetupStrategy;
 import baseMon.strategies.TurnStrategy;
 
 
@@ -31,6 +32,7 @@ public class GameImpl implements Game {
 	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
 	private MoveStrategy MS;
 	private TurnStrategy TS;
+	private SetupStrategy SS;
 	private int moveCount = 2;
 	private int[] dice = new int[2];
 	private int[] remainingDice = new int [4];
@@ -39,6 +41,11 @@ public class GameImpl implements Game {
 	public GameImpl(MoveStrategy MS, TurnStrategy TS){
 		this.MS = MS;
 		this.TS = TS;
+	}
+	public GameImpl(MoveStrategy MS, TurnStrategy TS, SetupStrategy SS){
+		this.MS = MS;
+		this.TS = TS;
+		this.SS = SS;
 	}
 	
 	public void newGame() {
