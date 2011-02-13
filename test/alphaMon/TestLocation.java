@@ -1,4 +1,4 @@
-package testAlphaMon;
+package alphaMon;
 
 import org.junit.*;
 
