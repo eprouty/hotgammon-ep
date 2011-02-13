@@ -1,4 +1,4 @@
-package testBetaMon;
+package betaMon;
 
 import static org.junit.Assert.*;
 

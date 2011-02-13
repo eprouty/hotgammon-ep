@@ -1,4 +1,4 @@
-package testDeltaMon;
+package deltaMon;
 
 import static org.junit.Assert.*;
 
