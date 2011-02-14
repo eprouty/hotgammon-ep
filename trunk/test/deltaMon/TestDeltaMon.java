@@ -5,19 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import deltaMon.DeltaTurnStrategy;
-
 import baseMon.Color;
 import baseMon.Game;
 import baseMon.GameImpl;
-import betaMon.BetaMoveStrategy;
 
 
 public class TestDeltaMon {
 private Game game;
 	
 	@Before public void setup() {
-	    game = new GameImpl(new BetaMoveStrategy(), new DeltaTurnStrategy());
+	    game = new GameImpl(new DeltaFactory());
 	    game.newGame();
 	}
 	

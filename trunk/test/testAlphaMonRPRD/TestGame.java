@@ -5,8 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import alphaMon.AlphaMoveStrategy;
-import alphaMon.AlphaTurnStrategy;
+import alphaMon.AlphaFactory;
 import baseMon.Color;
 import baseMon.Game;
 import baseMon.GameImpl;
@@ -25,7 +24,7 @@ public class TestGame {
 	
 	@Before
 	public void setUp() {
-		game = new GameImpl(new AlphaMoveStrategy(), new AlphaTurnStrategy());
+		game = new GameImpl(new AlphaFactory());
 		game.newGame();
 	}
 	
