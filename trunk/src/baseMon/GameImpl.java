@@ -4,6 +4,9 @@ package baseMon;
 
 import java.util.Hashtable;
 
+import alphaMon.AlphaMoveStrategy;
+import alphaMon.AlphaSetupStrategy;
+import alphaMon.AlphaTurnStrategy;
 import baseMon.strategies.MoveStrategy;
 import baseMon.strategies.SetupStrategy;
 import baseMon.strategies.TurnStrategy;
@@ -30,9 +33,9 @@ public class GameImpl implements Game {
 	private Color currentPlayer = Color.NONE;
 	private Hashtable<Location, Color> locationColor = new Hashtable<Location, Color>();
 	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
-	private MoveStrategy MS;
-	private TurnStrategy TS;
-	private SetupStrategy SS;
+	private MoveStrategy MS = new AlphaMoveStrategy();
+	private TurnStrategy TS = new AlphaTurnStrategy();
+	private SetupStrategy SS = new AlphaSetupStrategy();
 	private int moveCount = 2;
 	private int[] dice = new int[2];
 	private int[] remainingDice = new int [4];
@@ -53,38 +56,8 @@ public class GameImpl implements Game {
 		currentPlayer = Color.NONE;
 		turnCount = 0;
 		
-		//setup the locations that should have pieces to start
-		for (Location l : Location.values()){
-			switch(l){
-			case R1:
-				setupLocation(l, Color.BLACK, 2);
-				break;
-			case B1:
-				setupLocation(l, Color.RED, 2);
-				break;
-			case B6:
-				setupLocation(l, Color.BLACK, 5);
-				break;
-			case R6:
-				setupLocation(l, Color.RED, 5);
-				break;
-			case B8:
-				setupLocation(l, Color.BLACK, 3);
-				break;
-			case R8:
-				setupLocation(l, Color.RED, 3);
-				break;
-			case B12:
-				setupLocation(l, Color.RED, 5);
-				break;
-			case R12:
-				setupLocation(l, Color.BLACK, 5);
-				break;
-			//setup the blank areas with the default information
-			default:
-				setupLocation(l, Color.NONE, 0);
-			}
-		}
+		locationCount = SS.setupLocationCount();
+		locationColor = SS.setupLocationColor();
 	}
 	
 	/**
