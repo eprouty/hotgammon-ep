@@ -4,9 +4,7 @@ package baseMon;
 
 import java.util.Hashtable;
 
-import alphaMon.AlphaMoveStrategy;
-import alphaMon.AlphaSetupStrategy;
-import alphaMon.AlphaTurnStrategy;
+import baseMon.factories.GammonFactory;
 import baseMon.strategies.MoveStrategy;
 import baseMon.strategies.SetupStrategy;
 import baseMon.strategies.TurnStrategy;
@@ -33,22 +31,18 @@ public class GameImpl implements Game {
 	private Color currentPlayer = Color.NONE;
 	private Hashtable<Location, Color> locationColor = new Hashtable<Location, Color>();
 	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
-	private MoveStrategy MS = new AlphaMoveStrategy();
-	private TurnStrategy TS = new AlphaTurnStrategy();
-	private SetupStrategy SS = new AlphaSetupStrategy();
+	private MoveStrategy MS;
+	private TurnStrategy TS;
+	private SetupStrategy SS;
 	private int moveCount = 2;
 	private int[] dice = new int[2];
 	private int[] remainingDice = new int [4];
 	private int turnCount = 0;
 	
-	public GameImpl(MoveStrategy MS, TurnStrategy TS){
-		this.MS = MS;
-		this.TS = TS;
-	}
-	public GameImpl(MoveStrategy MS, TurnStrategy TS, SetupStrategy SS){
-		this.MS = MS;
-		this.TS = TS;
-		this.SS = SS;
+	public GameImpl(GammonFactory factory){
+		this.MS = factory.createMoveStrategy();
+		this.TS = factory.createTurnStrategy();
+		this.SS = factory.createSetupStrategy();
 	}
 	
 	public void newGame() {

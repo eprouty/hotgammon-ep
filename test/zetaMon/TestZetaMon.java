@@ -7,8 +7,6 @@ import java.util.Hashtable;
 import org.junit.Before;
 import org.junit.Test;
 
-import alphaMon.AlphaMoveStrategy;
-import alphaMon.AlphaTurnStrategy;
 import baseMon.Color;
 import baseMon.Game;
 import baseMon.GameImpl;
@@ -21,7 +19,7 @@ public class TestZetaMon {
 	private Game game;
 	
 	@Before public void setup(){
-		game = new GameImpl(new AlphaMoveStrategy(), new AlphaTurnStrategy(), new ZetaSetupStrategy());
+		game = new GameImpl(new ZetaFactory());
 		game.newGame();
 	}
 	
