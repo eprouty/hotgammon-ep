@@ -5,6 +5,7 @@ package baseMon;
 import java.util.Hashtable;
 
 import baseMon.factories.GammonFactory;
+import baseMon.strategies.DiceStrategy;
 import baseMon.strategies.MoveStrategy;
 import baseMon.strategies.SetupStrategy;
 import baseMon.strategies.TurnStrategy;
@@ -31,18 +32,22 @@ public class GameImpl implements Game {
 	private Color currentPlayer = Color.NONE;
 	private Hashtable<Location, Color> locationColor = new Hashtable<Location, Color>();
 	private Hashtable<Location, Integer> locationCount = new Hashtable<Location, Integer>();
+	private GammonFactory factory;
 	private MoveStrategy MS;
 	private TurnStrategy TS;
 	private SetupStrategy SS;
+	private DiceStrategy DS;
 	private int moveCount = 2;
 	private int[] dice = new int[2];
 	private int[] remainingDice = new int [4];
 	private int turnCount = 0;
 	
 	public GameImpl(GammonFactory factory){
+		this.factory = factory;
 		this.MS = factory.createMoveStrategy();
 		this.TS = factory.createTurnStrategy();
 		this.SS = factory.createSetupStrategy();
+		this.DS = factory.createDiceStrategy();
 	}
 	
 	public void newGame() {
@@ -52,6 +57,8 @@ public class GameImpl implements Game {
 		
 		locationCount = SS.setupLocationCount();
 		locationColor = SS.setupLocationColor();
+		
+		DS = factory.createDiceStrategy();
 	}
 	
 	/**
@@ -69,31 +76,12 @@ public class GameImpl implements Game {
 		//determine the next turn based off the selected turn strategy
 		currentPlayer = TS.nextPlayerInTurn(this);
 		
-		//sets the dice roll at the beggining of the turn
-		switch(turnCount % 3){
-		case 0:
-			dice[0] = 1;
-			dice[1] = 2;
-			remainingDice[0] = 1;
-			remainingDice[1] = 2;
-			break;
-		case 1:
-			dice[0] = 3;
-			dice[1] = 4;
-			remainingDice[0] = 3;
-			remainingDice[1] = 4;
-			break;
-		case 2:
-			dice[0] = 5;
-			dice[1] = 6;
-			remainingDice[0] = 5;
-			remainingDice[1] = 6;
-			break;
-		}
-		turnCount++;
+		dice = DS.rollDice();
+		remainingDice = dice;
 		
 		//reset the number of possible moves to 2
 		moveCount = 2;
+		turnCount++;
 	}
 	
 	public boolean move(Location from, Location to) {

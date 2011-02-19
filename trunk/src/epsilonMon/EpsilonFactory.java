@@ -1,12 +1,16 @@
-package alphaMon;
+package epsilonMon;
 
+import alphaMon.AlphaMoveStrategy;
+import alphaMon.AlphaSetupStrategy;
+import alphaMon.AlphaTurnStrategy;
 import baseMon.factories.GammonFactory;
 import baseMon.strategies.DiceStrategy;
 import baseMon.strategies.MoveStrategy;
 import baseMon.strategies.SetupStrategy;
 import baseMon.strategies.TurnStrategy;
 
-public class AlphaFactory implements GammonFactory {
+public class EpsilonFactory implements GammonFactory {
+
 	@Override
 	public MoveStrategy createMoveStrategy() {
 		return new AlphaMoveStrategy();
@@ -24,6 +28,6 @@ public class AlphaFactory implements GammonFactory {
 
 	@Override
 	public DiceStrategy createDiceStrategy() {
-		return new AlphaDiceStrategy();
+		return new EpsilonDiceStrategy();
 	}
 }
