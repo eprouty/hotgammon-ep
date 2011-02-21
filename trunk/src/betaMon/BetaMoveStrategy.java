@@ -13,7 +13,7 @@ public class BetaMoveStrategy implements MoveStrategy{
 		if (to == Location.B_BAR || to == Location.R_BAR){
 			return true;
 		}
-		//given the avaialable rolls it will never be possible for a player to bear off in this version
+		//given the available rolls it will never be possible for a player to bear off in this version
 		//so only ensure that the player cannot do it, since they will always have checkers stopping them from bearing off
 		if (to == Location.B_BEAR_OFF || to == Location.R_BEAR_OFF){
 			return false;
