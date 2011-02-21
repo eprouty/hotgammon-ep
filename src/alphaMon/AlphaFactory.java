@@ -5,6 +5,7 @@ import baseMon.strategies.DiceStrategy;
 import baseMon.strategies.MoveStrategy;
 import baseMon.strategies.SetupStrategy;
 import baseMon.strategies.TurnStrategy;
+import baseMon.strategies.WinnerStrategy;
 
 public class AlphaFactory implements GammonFactory {
 	@Override
@@ -25,5 +26,10 @@ public class AlphaFactory implements GammonFactory {
 	@Override
 	public DiceStrategy createDiceStrategy() {
 		return new AlphaDiceStrategy();
+	}
+
+	@Override
+	public WinnerStrategy createWinnerStrategy() {
+		return new AlphaWinnerStrategy();
 	}
 }

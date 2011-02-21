@@ -49,10 +49,13 @@ public class BackgamMoveStrategy implements MoveStrategy {
 					performCapture = true;
 				}
 			}
+			break;
+		case NONE:
+			return false;
 		}
-		
-		//Only movements relating to an available dice roll can be used
 		int distTravelled = Math.abs(Location.distance(from, to));
+		boolean performBearOff = (Location.B_BEAR_OFF == to);
+		//Only movements relating to an available dice roll can be used, unless a proper bear off is being performed
 		boolean valid = false;
 		for (int d : g.diceValuesLeft()){
 			if (d == distTravelled){
@@ -60,45 +63,53 @@ public class BackgamMoveStrategy implements MoveStrategy {
 				break;
 			}
 		}
-		if (!valid){
+		if (!valid && !performBearOff){
 			return false;
 		}
-		
-		Boolean correctDistanceBearOff = false;
-		if (to == Location.B_BEAR_OFF && g.getColor(from) == Color.BLACK){
-			for (int d : g.diceValuesLeft()){
-				if (d == distTravelled){
-					correctDistanceBearOff = true;
-					break;
-				}
-			}
-			if (!correctDistanceBearOff){
-				for (Location l : Location.values()){
-					if (Location.distance(from, l) < 0){
-						if (g.getColor(l) == Color.BLACK){
-							return false;
-						}
-					}
-				}
-			}
-		} else if (to == Location.R_BEAR_OFF && g.getColor(from) == Color.RED){
-			for (int d : g.diceValuesLeft()){
-				if (d == distTravelled){
-					correctDistanceBearOff = true;
-					break;
-				}
-			}
-			if (!correctDistanceBearOff){
-				for (Location l : Location.values()){
-					if (Location.distance(from, l) > 0){
-						if (g.getColor(l) == Color.RED){
-							return false;
-						}
-					}
-				}
+
+		boolean possibleBear = false;
+		for (int d : g.diceValuesLeft()){
+			if (d >= distTravelled){
+				possibleBear = true;
 			}
 		}
-		
+		performBearOff = false;
+		if (possibleBear){
+			if (to == Location.B_BEAR_OFF && g.getColor(from) == Color.BLACK){
+				for (int d : g.diceValuesLeft()){
+					if (d == distTravelled){
+						performBearOff = true;
+						break;
+					}
+				}
+				if (!performBearOff){
+					for (Location l : Location.values()){
+						if (Location.distance(from, l) < 0){
+							if (g.getColor(l) == Color.BLACK){
+								return false;
+							}
+						}
+					}
+				}
+			} else if (to == Location.R_BEAR_OFF && g.getColor(from) == Color.RED){
+				for (int d : g.diceValuesLeft()){
+					if (d == distTravelled){
+						performBearOff = true;
+						break;
+					}
+				}
+				if (!performBearOff){
+					for (Location l : Location.values()){
+						if (Location.distance(from, l) > 0){
+							if (g.getColor(l) == Color.RED){
+								return false;
+							}
+						}
+					}
+				} 
+			}
+		}
+				
 		/**Everything below this point affects the state of the game**/
 		if (performCapture){
 			switch(g.getColor(to)){
