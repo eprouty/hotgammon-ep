@@ -9,6 +9,7 @@ import baseMon.strategies.DiceStrategy;
 import baseMon.strategies.MoveStrategy;
 import baseMon.strategies.SetupStrategy;
 import baseMon.strategies.TurnStrategy;
+import baseMon.strategies.WinnerStrategy;
 
 
 /** Skeleton implementation of HotGammon.
@@ -37,6 +38,7 @@ public class GameImpl implements Game {
 	private TurnStrategy TS;
 	private SetupStrategy SS;
 	private DiceStrategy DS;
+	private WinnerStrategy WS;
 	private int moveCount = 2;
 	private int[] dice = new int[2];
 	private int[] remainingDice = new int [4];
@@ -48,6 +50,7 @@ public class GameImpl implements Game {
 		this.TS = factory.createTurnStrategy();
 		this.SS = factory.createSetupStrategy();
 		this.DS = factory.createDiceStrategy();
+		this.WS = factory.createWinnerStrategy();
 	}
 	
 	public void newGame() {
@@ -148,11 +151,7 @@ public class GameImpl implements Game {
 	}
 	
 	public Color winner() {
-		if (turnCount == 6){
-			return Color.RED;
-		} else {
-			return Color.NONE;
-		}
+		return WS.getWinner(this, turnCount);
 	}
 	
 	public Color getColor(Location location){
