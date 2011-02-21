@@ -81,7 +81,7 @@ public class BackgamMoveStrategy implements MoveStrategy {
 					}
 				}
 			}
-		} else if (to == Location.R_BEAR_OFF){
+		} else if (to == Location.R_BEAR_OFF && g.getColor(from) == Color.RED){
 			for (int d : g.diceValuesLeft()){
 				if (d == distTravelled){
 					correctDistanceBearOff = true;
@@ -90,8 +90,8 @@ public class BackgamMoveStrategy implements MoveStrategy {
 			}
 			if (!correctDistanceBearOff){
 				for (Location l : Location.values()){
-					if (Location.distance(from, l) < 0){
-						if (g.getColor(l) == Color.BLACK){
+					if (Location.distance(from, l) > 0){
+						if (g.getColor(l) == Color.RED){
 							return false;
 						}
 					}
