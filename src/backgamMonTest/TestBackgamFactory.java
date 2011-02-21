@@ -1,9 +1,8 @@
 package backgamMonTest;
 
 import epsilonMon.EpsilonTestDiceStrategy;
-import alphaMon.AlphaDiceStrategy;
-import alphaMon.AlphaMoveStrategy;
 import alphaMon.AlphaSetupStrategy;
+import backgamMon.BackgamMoveStrategy;
 import baseMon.factories.GammonFactory;
 import baseMon.strategies.DiceStrategy;
 import baseMon.strategies.MoveStrategy;
@@ -14,7 +13,7 @@ public class TestBackgamFactory implements GammonFactory{
 
 	@Override
 	public MoveStrategy createMoveStrategy() {
-		return new AlphaMoveStrategy();
+		return new BackgamMoveStrategy();
 	}
 
 	@Override
