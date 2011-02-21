@@ -31,4 +31,18 @@ public class TestBackgamMon {
 		}
 		assertEquals(c, game.getPlayerInTurn());
 	}
+	
+	@Test public void testDoubleDiceRoll(){
+		game.nextTurn();
+		game.nextTurn();
+		game.nextTurn();
+		game.nextTurn();
+		game.nextTurn();
+		game.nextTurn();
+		assertEquals(4, game.getNumberOfMovesLeft());
+	}
+	
+	@Test public void testBearOff(){
+		
+	}
 }
