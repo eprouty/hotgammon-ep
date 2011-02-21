@@ -77,10 +77,18 @@ public class GameImpl implements Game {
 		currentPlayer = TS.nextPlayerInTurn(this);
 		
 		dice = DS.rollDice();
-		remainingDice = dice;
+		if (dice[0] == dice[1]){
+			for (int i = 0; i < remainingDice.length; i++){
+				remainingDice[i] = dice[0];
+			}
+			moveCount = 4;
+		} else {
+			remainingDice = new int[4];
+			remainingDice[0] = dice[0];
+			remainingDice[1] = dice[1];
+			moveCount = 2;
+		}
 		
-		//reset the number of possible moves to 2
-		moveCount = 2;
 		turnCount++;
 	}
 	
