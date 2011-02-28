@@ -30,7 +30,8 @@ public class TournamentPlayerImpl extends TournamentPlayer
 	public TournamentPlayerImpl(TournamentBoard board, Color myColor)
 	{
 		super(board, myColor);
-		// TODO Auto-generated constructor stub
+		
+		Game g = new GameImpl();
 	}
 
 	/* (non-Javadoc)
