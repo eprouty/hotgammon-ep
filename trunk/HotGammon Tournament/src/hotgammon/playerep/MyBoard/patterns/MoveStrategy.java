@@ -1,7 +1,7 @@
-package baseMon.strategies;
+package hotgammon.playerep.MyBoard.patterns;
 
-import baseMon.Game;
-import baseMon.Location;
+import hotgammon.Location;
+import hotgammon.playerep.MyBoard.Game;
 
 public interface MoveStrategy {
 	public boolean isMoveValid(Game g, Location from, Location to);

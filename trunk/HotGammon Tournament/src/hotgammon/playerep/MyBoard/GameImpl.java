@@ -1,16 +1,17 @@
 //Eric Prouty
 
-package baseMon;
+package hotgammon.playerep.MyBoard;
+
+import hotgammon.Color;
+import hotgammon.Location;
+import hotgammon.playerep.MyBoard.patterns.DiceStrategy;
+import hotgammon.playerep.MyBoard.patterns.GammonFactory;
+import hotgammon.playerep.MyBoard.patterns.MoveStrategy;
+import hotgammon.playerep.MyBoard.patterns.SetupStrategy;
+import hotgammon.playerep.MyBoard.patterns.TurnStrategy;
+import hotgammon.playerep.MyBoard.patterns.WinnerStrategy;
 
 import java.util.Hashtable;
-
-import baseMon.factories.GammonFactory;
-import baseMon.strategies.DiceStrategy;
-import baseMon.strategies.MoveStrategy;
-import baseMon.strategies.SetupStrategy;
-import baseMon.strategies.TurnStrategy;
-import baseMon.strategies.WinnerStrategy;
-
 
 /** Skeleton implementation of HotGammon.
  

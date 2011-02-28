@@ -7,9 +7,12 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package hotgammon.player;
+package hotgammon.playerep;
 
 import hotgammon.Color;
+import hotgammon.playerep.MyBoard.BackgamFactory;
+import hotgammon.playerep.MyBoard.Game;
+import hotgammon.playerep.MyBoard.GameImpl;
 import hotgammon.tournament.*;
 
 
@@ -31,7 +34,7 @@ public class TournamentPlayerImpl extends TournamentPlayer
 	{
 		super(board, myColor);
 		
-		Game g = new GameImpl();
+		Game g = new GameImpl(new BackgamFactory());
 	}
 
 	/* (non-Javadoc)

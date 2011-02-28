@@ -1,10 +1,10 @@
-package alphaMon;
+package hotgammon.playerep.MyBoard;
+
+import hotgammon.Color;
+import hotgammon.Location;
+import hotgammon.playerep.MyBoard.patterns.SetupStrategy;
 
 import java.util.Hashtable;
-
-import baseMon.Color;
-import baseMon.Location;
-import baseMon.strategies.SetupStrategy;
 
 public class AlphaSetupStrategy implements SetupStrategy {
 

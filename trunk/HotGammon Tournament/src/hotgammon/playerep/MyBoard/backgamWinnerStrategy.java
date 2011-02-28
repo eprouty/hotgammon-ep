@@ -1,9 +1,8 @@
-package backgamMon;
+package hotgammon.playerep.MyBoard;
 
-import baseMon.Color;
-import baseMon.Game;
-import baseMon.Location;
-import baseMon.strategies.WinnerStrategy;
+import hotgammon.Color;
+import hotgammon.Location;
+import hotgammon.playerep.MyBoard.patterns.WinnerStrategy;
 
 public class backgamWinnerStrategy implements WinnerStrategy {
 
