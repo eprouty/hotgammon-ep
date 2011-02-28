@@ -1,13 +1,11 @@
-package backgamMon;
+package hotgammon.playerep.MyBoard;
 
-import epsilonMon.EpsilonDiceStrategy;
-import alphaMon.AlphaSetupStrategy;
-import baseMon.factories.GammonFactory;
-import baseMon.strategies.DiceStrategy;
-import baseMon.strategies.MoveStrategy;
-import baseMon.strategies.SetupStrategy;
-import baseMon.strategies.TurnStrategy;
-import baseMon.strategies.WinnerStrategy;
+import hotgammon.playerep.MyBoard.patterns.DiceStrategy;
+import hotgammon.playerep.MyBoard.patterns.GammonFactory;
+import hotgammon.playerep.MyBoard.patterns.MoveStrategy;
+import hotgammon.playerep.MyBoard.patterns.SetupStrategy;
+import hotgammon.playerep.MyBoard.patterns.TurnStrategy;
+import hotgammon.playerep.MyBoard.patterns.WinnerStrategy;
 
 public class BackgamFactory implements GammonFactory {
 
@@ -28,7 +26,7 @@ public class BackgamFactory implements GammonFactory {
 
 	@Override
 	public DiceStrategy createDiceStrategy() {
-		return new EpsilonDiceStrategy();
+		return null;
 	}
 
 	@Override

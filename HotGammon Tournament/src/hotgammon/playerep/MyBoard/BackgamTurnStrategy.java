@@ -1,10 +1,9 @@
-package backgamMon;
+package hotgammon.playerep.MyBoard;
+
+import hotgammon.Color;
+import hotgammon.playerep.MyBoard.patterns.TurnStrategy;
 
 import java.util.Random;
-
-import baseMon.Color;
-import baseMon.Game;
-import baseMon.strategies.TurnStrategy;
 
 public class BackgamTurnStrategy implements TurnStrategy {
 

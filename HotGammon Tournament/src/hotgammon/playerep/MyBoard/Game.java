@@ -1,4 +1,4 @@
-package baseMon;
+package hotgammon.playerep.MyBoard;
 
 
 /** This interface encapsulate all responsibilites of

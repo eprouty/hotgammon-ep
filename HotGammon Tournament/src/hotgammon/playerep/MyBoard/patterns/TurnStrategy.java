@@ -1,7 +1,7 @@
-package baseMon.strategies;
+package hotgammon.playerep.MyBoard.patterns;
 
-import baseMon.Color;
-import baseMon.Game;
+import hotgammon.Color;
+import hotgammon.playerep.MyBoard.Game;
 
 public interface TurnStrategy {
 	public Color nextPlayerInTurn(Game g);

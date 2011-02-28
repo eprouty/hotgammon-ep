@@ -1,9 +1,8 @@
-package backgamMon;
+package hotgammon.playerep.MyBoard;
 
-import baseMon.Color;
-import baseMon.Game;
-import baseMon.Location;
-import baseMon.strategies.MoveStrategy;
+import hotgammon.Color;
+import hotgammon.Location;
+import hotgammon.playerep.MyBoard.patterns.MoveStrategy;
 
 public class BackgamMoveStrategy implements MoveStrategy {
 
