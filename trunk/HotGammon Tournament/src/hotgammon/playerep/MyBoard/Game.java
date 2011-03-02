@@ -1,5 +1,8 @@
 package hotgammon.playerep.MyBoard;
 
+import hotgammon.Color;
+import hotgammon.Location;
+
 
 /** This interface encapsulate all responsibilites of
     a Backgammon game. Please consult the book's

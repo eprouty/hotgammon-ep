@@ -72,6 +72,24 @@ public class BackgamMoveStrategy implements MoveStrategy {
 				possibleBear = true;
 			}
 		}
+		for (Location l : Location.values()){
+			switch (g.getColor(from)){
+			case RED:
+				if (g.getColor(l) == Color.RED){
+					if (Location.findLocation(g.getColor(from), l, 6) != Location.R_BEAR_OFF){
+						possibleBear = false;
+					}
+				}
+				break;
+			case BLACK:
+				if (g.getColor(l) == Color.BLACK){
+					if (Location.findLocation(g.getColor(from), l, 6) != Location.B_BEAR_OFF){
+						possibleBear = false;
+					}
+				}
+				break;
+			}
+		}
 		performBearOff = false;
 		if (possibleBear){
 			if (to == Location.B_BEAR_OFF && g.getColor(from) == Color.BLACK){
