@@ -84,7 +84,8 @@ public class TournamentPlayerImpl extends TournamentPlayer
 			diceLeft = new int[] {d1, d2};
 		}
 		
-		return makePlayerMoves(numberOfMoves);
+		TournamentMove[] moves = makePlayerMoves(numberOfMoves);
+		
 	}
 	
 	private void makeOpponentsMoves(TournamentMove[] lastMoves){
@@ -103,11 +104,57 @@ public class TournamentPlayerImpl extends TournamentPlayer
 		TournamentMove[] moves = new TournamentMove[numOfMoves];
 		
 		g.nextTurn();
-		for (int i = 0; i < moves.length; i++){
-			moves[i] = determineNextMove();
+		for (int i = 0; i < numOfMoves; i++){
+			moves[i] = simpleMove();
+			if (moves[i] != null){
+				g.move(moves[i].getFromLocation(), moves[i].getToLocation());
+			}
 		}
 		
 		return moves;
+	}
+	
+	private TournamentMove simpleMove(){
+		ArrayList <Location>redPieces = new ArrayList<Location>();
+		ArrayList <Location>blackPieces = new ArrayList<Location>();
+		for (Location l : Location.values()){
+			switch(g.getColor(l)){
+			case BLACK:
+				blackPieces.add(l);
+				break;
+			case RED:
+				redPieces.add(l);
+				break;
+			}
+		}
+		
+		if (myColor == Color.RED){
+			return simpleSelectMove(redPieces, blackPieces);
+		} else {
+			return simpleSelectMove(blackPieces, redPieces);
+		}
+	}
+	
+	private TournamentMove simpleSelectMove(ArrayList<Location> myPieces, ArrayList<Location> opponentsPieces){
+		if (myPieces.contains(Location.R_BAR) || myPieces.contains(Location.B_BAR)){
+			TournamentMove temp = moveFromBar(myPieces, opponentsPieces);
+			g.move(temp.getFromLocation(), temp.getToLocation());
+			return temp;
+		}
+		Location array[] = new Location[myPieces.size()];
+		myPieces.toArray(array);
+		for (Location l : array){
+			for (int i : g.diceValuesLeft()){
+				if (i > 0 && i <= 6){
+					Location dest = Location.findLocation(myColor, l, i);
+					if (MS.isMoveValid(g, l, dest)){
+						return new TournamentMove(l, dest);
+					}
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	private TournamentMove determineNextMove(){
@@ -135,53 +182,64 @@ public class TournamentPlayerImpl extends TournamentPlayer
 		if (myPieces.contains(Location.R_BAR) || myPieces.contains(Location.B_BAR)){
 			TournamentMove temp = moveFromBar(myPieces, opponentsPieces);
 			g.move(temp.getFromLocation(), temp.getToLocation());
+			return temp;
 		}
 		Location bestDest = null;
 		Location start = null;
-		for (Location l : (Location[])myPieces.toArray()){
+		Location array[] = new Location[myPieces.size()];
+		myPieces.toArray(array);
+		for (Location l : array){
 			Location temp = checkBestDestination(l, bestDest);
 			if (temp != null){
 				bestDest = temp;
 				start = l;
 			}
 		}
-		
-		g.move(start, bestDest);
+	
 		return new TournamentMove(start, bestDest);
 	}
 	
 	private Location checkBestDestination(Location start, Location curBest){
 		Stack<Location> possibleDests = new Stack<Location>();
-		for (int i : diceLeft){
-			Location dest = Location.findLocation(myColor, start, i);
-			if (MS.isMoveValid(g, start, dest)){
-				possibleDests.push(dest);
+		for (int i : g.diceValuesLeft()){
+			if (i != -1){
+				Location dest = Location.findLocation(myColor, start, i);
+				if (MS.isMoveValid(g, start, dest)){
+					possibleDests.push(dest);
+				}
 			}
 		}
 		
 		boolean capture = false;
 		boolean unsafe = false;
-		
-		Location best = null;
+		boolean valid = false;
+		Location best = possibleDests.peek();
 		while (!possibleDests.isEmpty()){
 			Location dest = possibleDests.pop();
-			if (g.getColor(dest) != myColor){
-				capture = true;
+			for(int i : g.diceValuesLeft()){
+				if (i == Location.distance(start, dest)){
+					valid = true;
+					break;
+				}
 			}
-			if (g.getCount(start) == 1){
-				unsafe = true;
+			if (valid){
+				if (g.getColor(dest) != myColor){
+					capture = true;
+				}
+				if (g.getCount(start) == 1){
+					unsafe = true;
+				}
+				
+				if (capture && unsafe){
+					best = dest;
+					break;
+				} else if (capture) {
+					best = dest;
+				} else if (unsafe){
+					best = dest;
+				} 
 			}
-			
-			if (capture && unsafe){
-				best = dest;
-				break;
-			} else if (capture) {
-				best = dest;
-			} else if (unsafe){
-				best = dest;
-			} 
 		}
-		
 		return best;
 	}
 	
