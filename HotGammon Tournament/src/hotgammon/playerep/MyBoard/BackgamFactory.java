@@ -1,5 +1,6 @@
 package hotgammon.playerep.MyBoard;
 
+import hotgammon.Color;
 import hotgammon.playerep.MyBoard.patterns.DiceStrategy;
 import hotgammon.playerep.MyBoard.patterns.GammonFactory;
 import hotgammon.playerep.MyBoard.patterns.MoveStrategy;
@@ -8,7 +9,12 @@ import hotgammon.playerep.MyBoard.patterns.TurnStrategy;
 import hotgammon.playerep.MyBoard.patterns.WinnerStrategy;
 
 public class BackgamFactory implements GammonFactory {
-
+	MockDice md;
+	Color first;
+	public BackgamFactory(MockDice md, Color firstToAct){
+		this.md = md;
+		this.first = firstToAct;
+	}
 	@Override
 	public MoveStrategy createMoveStrategy() {
 		return new BackgamMoveStrategy();
@@ -16,7 +22,7 @@ public class BackgamFactory implements GammonFactory {
 
 	@Override
 	public TurnStrategy createTurnStrategy() {
-		return new BackgamTurnStrategy();
+		return new BackgamTurnStrategy(first);
 	}
 
 	@Override
@@ -26,7 +32,7 @@ public class BackgamFactory implements GammonFactory {
 
 	@Override
 	public DiceStrategy createDiceStrategy() {
-		return null;
+		return md;
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import hotgammon.playerep.MyBoard.patterns.WinnerStrategy;
 
 import java.util.Hashtable;
 
+
 /** Skeleton implementation of HotGammon.
  
    This source code is from the book 
