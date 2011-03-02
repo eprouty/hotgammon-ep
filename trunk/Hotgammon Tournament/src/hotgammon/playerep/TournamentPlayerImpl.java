@@ -53,11 +53,14 @@ public class TournamentPlayerImpl extends TournamentPlayer
 	 */
 	@Override
 	public TournamentMove[] move(int die1, int die2, TournamentMove[] opponentsLastMoves){
+		//setup my implementation of the game on the first move
 		if (firstTurn){
-			if (opponentsLastMoves == null){
+			//if no opponents moves are passed then my player is the first to act
+			if (opponentsLastMoves == null || opponentsLastMoves.length == 0){
 				g = new GameImpl(new BackgamFactory(md, myColor));
 				g.newGame();
 			} else {
+				//if moves exist that the first to act was the opposite color as this players... set it accordingly
 				switch(myColor){
 				case BLACK:
 					g = new GameImpl(new BackgamFactory(md, Color.RED));
@@ -65,6 +68,7 @@ public class TournamentPlayerImpl extends TournamentPlayer
 				case RED:
 					g = new GameImpl(new BackgamFactory(md, Color.BLACK));	
 				}
+				//start the new game and make the opponents moves
 				g.newGame();
 				try {
 					makeOpponentsMoves(opponentsLastMoves);
@@ -75,6 +79,7 @@ public class TournamentPlayerImpl extends TournamentPlayer
 			}
 			firstTurn = false;
 		} else {
+			//make the opponents moves at the beggining of your turn
 			try {
 				makeOpponentsMoves(opponentsLastMoves);
 			} catch (InvalidMoveException e) {
@@ -84,14 +89,17 @@ public class TournamentPlayerImpl extends TournamentPlayer
 			}
 		}
 		
+		//set the dice so that my implementation knows what dice values to use
 		md.setDice(die1, die2);
 		int numberOfMoves = 2;
+		//double the num of moves if there are doubles
 		if (die1 == die2){
 			numberOfMoves = 4;
 		}
 		
 		TournamentMove[] moves = null;
 		try {
+			//determine moves to make
 			moves = makePlayerMoves(numberOfMoves);
 		} catch (InvalidMoveException e) {
 			System.out.println("Breaking trying to make player moves");
@@ -103,11 +111,13 @@ public class TournamentPlayerImpl extends TournamentPlayer
 		return moves;
 	}
 	
+	//execute the opponents moves that were passed to you at the beggining of the turn
 	private void makeOpponentsMoves(TournamentMove[] lastMoves) throws InvalidMoveException{
 		if (lastMoves == null || lastMoves.length == 0){
 			return;
 		}
 		
+		//determine what the opponents dice values were to maitain continuity with the game implementation i developed
 		int od1 = 0, od2 = 0;
 		switch (lastMoves.length){
 		case 4:
@@ -126,37 +136,31 @@ public class TournamentPlayerImpl extends TournamentPlayer
 		
 		for (TournamentMove move : lastMoves){
 			g.move(move.getFromLocation(), move.getToLocation());
-				/**System.out.println("The move from " + move.getFromLocation() + " to " + move.getToLocation() + " is an illegal move");
-				System.out.println("The count from is " + g.getCount(move.getFromLocation()));
-				System.out.println("The count is " + g.getCount(Location.B1));
-				System.out.println("The count is " + g.getCount(Location.B2));
-				System.out.println("The count is " + g.getCount(Location.B3));
-				System.out.println("The count is " + g.getCount(Location.B4));
-				System.out.println("The count is " + g.getCount(Location.B5));
-				System.out.println("The count is " + g.getCount(Location.B6));
-				System.out.println("The count is " + g.getCount(Location.B7));
-				System.out.println("The count is " + g.getCount(Location.B8));
-				System.out.println("The count is " + g.getCount(Location.B9));
-				throw new InvalidMoveException();
-			}**/
 		}
 	}
 	
+	//make and execute the moves for this turn in my game implementation
 	private TournamentMove[] makePlayerMoves(int numOfMoves) throws InvalidMoveException{
 		TournamentMove[] moves = new TournamentMove[numOfMoves];
 		int invalidMoves = 0;
 		
+		//start this players turn in my impl
 		g.nextTurn();
+		//for each available move this turn select a valid move
 		for (int i = 0; i < numOfMoves; i++){
+			//select the move
 			moves[i] = simpleMove();
 			if (moves[i] != null){
+				//execute the move in my implementation so that the next one can also be properly selected
 				if (!g.move(moves[i].getFromLocation(), moves[i].getToLocation())){
 					throw new InvalidMoveException();
 				}
 			} else {
+				//this keeps track of however many moves must be discared as there are no possible options
 				invalidMoves++;
 			}
 		}
+		//if available moves cannot be used this reformats the array that will be returned in order to represent that fact
 		if (invalidMoves > 0){
 			TournamentMove[] temp = new TournamentMove[numOfMoves - invalidMoves];
 			int i = 0;
@@ -172,6 +176,7 @@ public class TournamentPlayerImpl extends TournamentPlayer
 		return moves;
 	}
 	
+	//selects the simplest available and successful move
 	private TournamentMove simpleMove(){
 		ArrayList <Location>redPieces = new ArrayList<Location>();
 		ArrayList <Location>blackPieces = new ArrayList<Location>();
@@ -193,19 +198,24 @@ public class TournamentPlayerImpl extends TournamentPlayer
 		}
 	}
 	
+	//determine a viable move
 	private TournamentMove simpleSelectMove(ArrayList<Location> myPieces, ArrayList<Location> opponentsPieces){
+		//if there are pieces on the bar than those pieces must be moved first
 		if (myPieces.contains(Location.R_BAR) || myPieces.contains(Location.B_BAR)){
 			TournamentMove temp = moveFromBar(myPieces, opponentsPieces);
 			return temp;
 		}
 		Location array[] = new Location[myPieces.size()];
 		myPieces.toArray(array);
+		//cycle through all of the locations with this players pieces on it inorder to find one with a possible move
 		for (Location l : array){
+			//the player cannot move a piece that is in the bear off
 			if (l == Location.R_BEAR_OFF || l == Location.B_BEAR_OFF){
 			} else {
 				for (int i : g.diceValuesLeft()){
 					if (i > 0 && i <= 6){
 						Location dest = Location.findLocation(myColor, l, i);
+						//if a movement to this destination is valid return it
 						if (MS.isMoveValid(g, l, dest)){
 							return new TournamentMove(l, dest);
 						}
@@ -213,96 +223,11 @@ public class TournamentPlayerImpl extends TournamentPlayer
 				}
 			}
 		}
-		
+		//returns null, this is interpreted by the makePlayerMoves() function as being that there are no possible valid moves, and should be represented as such
 		return null;
 	}
 	
-	/**private TournamentMove determineNextMove(){
-		ArrayList <Location>redPieces = new ArrayList<Location>();
-		ArrayList <Location>blackPieces = new ArrayList<Location>();
-		for (Location l : Location.values()){
-			switch(g.getColor(l)){
-			case BLACK:
-				blackPieces.add(l);
-				break;
-			case RED:
-				redPieces.add(l);
-				break;
-			}
-		}
-		
-		if (myColor == Color.RED){
-			return selectMove(redPieces, blackPieces);
-		} else {
-			return selectMove(blackPieces, redPieces);
-		}
-	}
-	
-	private TournamentMove selectMove(ArrayList<Location> myPieces, ArrayList<Location> opponentsPieces){
-		if (myPieces.contains(Location.R_BAR) || myPieces.contains(Location.B_BAR)){
-			TournamentMove temp = moveFromBar(myPieces, opponentsPieces);
-			g.move(temp.getFromLocation(), temp.getToLocation());
-			return temp;
-		}
-		Location bestDest = null;
-		Location start = null;
-		Location array[] = new Location[myPieces.size()];
-		myPieces.toArray(array);
-		for (Location l : array){
-			Location temp = checkBestDestination(l, bestDest);
-			if (temp != null){
-				bestDest = temp;
-				start = l;
-			}
-		}
-	
-		return new TournamentMove(start, bestDest);
-	}
-	
-	private Location checkBestDestination(Location start, Location curBest){
-		Stack<Location> possibleDests = new Stack<Location>();
-		for (int i : g.diceValuesLeft()){
-			if (i != -1){
-				Location dest = Location.findLocation(myColor, start, i);
-				if (MS.isMoveValid(g, start, dest)){
-					possibleDests.push(dest);
-				}
-			}
-		}
-		
-		boolean capture = false;
-		boolean unsafe = false;
-		boolean valid = false;
-		Location best = possibleDests.peek();
-		while (!possibleDests.isEmpty()){
-			Location dest = possibleDests.pop();
-			for(int i : g.diceValuesLeft()){
-				if (i == Location.distance(start, dest)){
-					valid = true;
-					break;
-				}
-			}
-			if (valid){
-				if (g.getColor(dest) != myColor){
-					capture = true;
-				}
-				if (g.getCount(start) == 1){
-					unsafe = true;
-				}
-				
-				if (capture && unsafe){
-					best = dest;
-					break;
-				} else if (capture) {
-					best = dest;
-				} else if (unsafe){
-					best = dest;
-				} 
-			}
-		}
-		return best;
-	}**/
-	
+	//makes a movement off of the players respective bar
 	private TournamentMove moveFromBar(ArrayList<Location> myPieces, ArrayList<Location> opponentsPieces){
 		Location locD1;
 		if (myColor == Color.RED){
@@ -324,10 +249,11 @@ public class TournamentPlayerImpl extends TournamentPlayer
 				}
 			}
 		} 
-		
+		//returns null, this is interpreted by the makePlayerMoves() function as being that there are no possible valid moves, and should be represented as such
 		return null;
 	}
 
+	//allows access to the game board for testing purposes
 	public Game accessMyBoard(){
 		return g;
 	}
