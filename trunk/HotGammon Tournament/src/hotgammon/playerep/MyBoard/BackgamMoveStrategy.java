@@ -125,6 +125,8 @@ public class BackgamMoveStrategy implements MoveStrategy {
 					}
 				} 
 			}
+		} else {
+			return false;
 		}
 				
 		/**Everything below this point affects the state of the game**/
